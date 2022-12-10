@@ -68,7 +68,7 @@ async def root():
 def predictions(payload: Payload):
     predicted_rc = predict_pipeline(payload)
     data = prepare_sample(payload, predicted_rc)
-    # conn = db_connection()
+    conn = db_connection()
     # insert_sample(data, conn)
-    return data
+    return conn
 
