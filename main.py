@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 from model.model import predict_pipeline, prepare_sample
@@ -59,7 +60,7 @@ class Payload(BaseModel):
 
 # Instantiate FastAPI
 app = FastAPI()
-conn = db_connection()
+# conn = db_connection()
 
 @app.get("/")
 async def root():
@@ -74,6 +75,7 @@ async def root():
 def predictions(payload: Payload):
     predicted_rc = predict_pipeline(payload)
     data = prepare_sample(payload, predicted_rc)
+    conn = db_connection()
     # insert_sample(data, conn)
     return conn
 
