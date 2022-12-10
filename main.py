@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from model.model import predict_pipeline
-# Start server: uvicorn main:app --reload
+from model.model import predict_pipeline, prepare_sample
+from database.connection import db_connection, insert_sample
 
 class Payload(BaseModel):
     echantillon: str
@@ -57,12 +57,18 @@ class Payload(BaseModel):
     param_rr_2: float
     param_rr_3: float
 
+# Instantiate FastAPI
 app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Bienvenue dans l'API de prédiction de la résistance à la compression du béton"}
 
 @app.post("/predict")
 def predictions(payload: Payload):
-    return predict_pipeline(payload)
+    predicted_rc = predict_pipeline(payload)
+    data = prepare_sample(payload, predicted_rc)
+    conn = db_connection()
+    insert_sample(data, conn)
+    return predicted_rc
+

@@ -1,6 +1,7 @@
 import pandas as pd
 import joblib
 from pathlib import Path
+from datetime import datetime
 
 # get base path
 BASE_DIR = Path(__file__).resolve(strict=True).parent
@@ -36,4 +37,16 @@ def predict_pipeline(sample):
 
     # return prediction
     return (y_pred[0])
+
+def prepare_sample(sample, predicted_rc):
+    # get sample values inside df (interim df, not the shape we want)
+    interim_df = pd.DataFrame(sample)
+    # get columns and values
+    columns = interim_df[0].values
+    values = interim_df[1].values
+    # create df with the right shape
+    data = pd.DataFrame(data=[values], columns=columns)
+    data["prediction_rc28j"] = predicted_rc
+    data["prediction_date"] = datetime.now()
+    return data
 
