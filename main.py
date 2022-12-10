@@ -67,8 +67,8 @@ async def root():
 @app.post("/predict")
 def predictions(payload: Payload):
     predicted_rc = predict_pipeline(payload)
-    data = prepare_sample(payload, predicted_rc)
-    conn = db_connection()
-    insert_sample(data, conn)
+    # data = prepare_sample(payload, predicted_rc)
+    # conn = db_connection()
+    # insert_sample(data, conn)
     return predicted_rc
 
