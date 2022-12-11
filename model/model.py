@@ -7,7 +7,7 @@ from datetime import datetime
 BASE_DIR = Path(__file__).resolve(strict=True).parent
 
 # load model
-with open(f"{BASE_DIR}/ridgecv_model.sav", "rb") as f:
+with open(f"{BASE_DIR}/sgd_model.sav", "rb") as f:
     model = joblib.load(f)
 
 def predict_pipeline(sample):
@@ -37,6 +37,7 @@ def predict_pipeline(sample):
 
     # return prediction
     return (y_pred[0])
+
 
 def prepare_sample(sample, predicted_rc):
     # get sample values inside df (interim df, not the shape we want)
