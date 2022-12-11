@@ -60,21 +60,16 @@ class Payload(BaseModel):
 
 # Instantiate FastAPI
 app = FastAPI()
-conn = db_connection()
 
 @app.get("/")
 async def root():
-    return {"message": "Bienvenue dans l'API de prédiction de la résistance à la compression du béton",
-            "db_name": os.environ["DB_NAME"],
-            "db_user": os.environ["DB_USER"],
-            "db_pass": os.environ["DB_PASS"],
-            "db_host": os.environ["DB_HOST"],
-            "db_port": os.environ['DB_PORT']}
+    return {"message": "Bienvenue dans l'API de prédiction de la résistance à la compression du béton"}
 
 @app.post("/predict")
 def predictions(payload: Payload):
+    conn = db_connection()
     predicted_rc = predict_pipeline(payload)
     data = prepare_sample(payload, predicted_rc)
     insert_sample(data, conn)
-    return conn
+    return predicted_rc
 
